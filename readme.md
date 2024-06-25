@@ -1,6 +1,5 @@
 # Redis
 
-Example manage other data types:
 
 Datos para prueba y keys:
 
@@ -31,10 +30,6 @@ Utiliza Postman, cURL, o Swagger UI para enviar una solicitud GET a /clients con
 - curl "http://localhost:5278/clients?page=1&pageSize=10000"
 
 Cambia los parámetros page y pageSize para probar diferentes rangos de paginación.
-
-Batching: Las operaciones HashSetAsync y ListRightPushAsync se agregan a un batch. batch.Execute() no es necesario ya que las operaciones se disparan al finalizar la espera de todas las tareas con Task.WhenAll(tasks).
-Task Management: Task.WhenAll(tasks) espera a que todas las tareas en el lote se completen. Esto asegura que todas las operaciones de Redis en el batch sean enviadas y completadas antes de que el método retorne.
-Eficiencia: Usar batching en este modo permite agrupar múltiples operaciones en una sola llamada a Redis, lo cual puede mejorar significativamente la eficiencia cuando se manejan grandes volúmenes de datos.
 
 
 # Explicación de los tipos de estructura en Redis
