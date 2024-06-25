@@ -1,13 +1,21 @@
 using StackExchange.Redis;
 using System.Text.Json;
 using Microsoft.OpenApi.Models;
+using Microsoft.AspNetCore.Mvc;
 
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Configuración de Redis
-builder.Services.AddSingleton<IConnectionMultiplexer>(ConnectionMultiplexer.Connect(builder.Configuration["RedisCacheSettings:ConnectionString"]));
+//builder.Services.AddSingleton<IConnectionMultiplexer>(ConnectionMultiplexer.Connect(builder.Configuration["RedisCacheSettings:ConnectionString"]));
+// Obtener la configuración de la conexión Redis desde appsettings.json
+var redisConfiguration = builder.Configuration["RedisCacheSettings:ConnectionString"];
+
+// Configuración de Redis con modo administrador
+builder.Services.AddSingleton<IConnectionMultiplexer>(ConnectionMultiplexer.Connect(redisConfiguration));
+
 builder.Services.AddSingleton<RedisCacheService>();
+builder.Services.AddSingleton<RedisClientService>();
 
 // Añadir y configurar Swagger
 builder.Services.AddEndpointsApiExplorer();
@@ -186,6 +194,26 @@ app.MapGet("/getClient/{clientId}", async (RedisCacheService clientService, stri
     return name != null ? Results.Ok(name) : Results.NotFound("Cliente no encontrado.");
 });
 
+///Clients  bigdata
+///
+app.MapPost("/loadClients", async ([FromServices] RedisClientService clientService) =>
+{
+    await clientService.LoadClientsAsync();
+    return Results.Ok("Todos los clientes han sido cargados en Redis.");
+});
+
+app.MapGet("/clients", async ([FromServices] RedisClientService clientService, [FromQuery] int page = 1, [FromQuery] int pageSize = 100) =>
+{
+    var clients = await clientService.GetClientsPaginatedAsync(page, pageSize);
+    return Results.Ok(clients);
+});
+
+//deleta all
+app.MapPost("/flushDatabase", async ([FromServices] RedisClientService clientService) =>
+{
+    await clientService.FlushDatabaseAsync();
+    return Results.Ok("La base de datos de Redis ha sido borrada completamente.");
+});
 
 app.Run();
 

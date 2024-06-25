@@ -32,3 +32,4 @@
 /Users/didierrestrepo/dev/RedisMinimalApi/obj/Debug/net8.0/RedisMinimalApi.pdb
 /Users/didierrestrepo/dev/RedisMinimalApi/obj/Debug/net8.0/RedisMinimalApi.genruntimeconfig.cache
 /Users/didierrestrepo/dev/RedisMinimalApi/obj/Debug/net8.0/ref/RedisMinimalApi.dll
+/Users/didierrestrepo/dev/RedisMinimalApi/obj/Debug/net8.0/RedisMinimalApi.sourcelink.json
