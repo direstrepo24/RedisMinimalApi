@@ -208,6 +208,8 @@ app.MapGet("/clients", async ([FromServices] RedisClientService clientService, [
     return Results.Ok(clients);
 });
 
+
+
 //deleta all
 app.MapPost("/flushDatabase", async ([FromServices] RedisClientService clientService) =>
 {
